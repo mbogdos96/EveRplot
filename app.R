@@ -257,9 +257,8 @@ ui <- fluidPage(
                 br(),
                 
                 #Statement of developer and license under which it is published
-                h6("Created by Michael Bogdos; GNU v 3 License. Please cite DOI
-                   10.1021/XXXXXX when using figures created with EveRplot for
-                   scientific publications.")
+                h6("©2016-2021 ETH Zurich, Michael K. Bogdos. Please cite the 
+                corresponding publication when using figures created with EveRplot.")
     ),
     
     mainPanel(
