@@ -258,7 +258,13 @@ ui <- fluidPage(
                 
                 #Statement of developer and license under which it is published
                 h6("©2016-2021 ETH Zurich, Michael K. Bogdos. Please cite the 
-                corresponding publication when using figures created with EveRplot.")
+                corresponding publication or Zenodo DOI
+                when using figures created with EveRplot."),
+                
+                # Add a text which is hyperlinked to a github repository
+                HTML(paste0("The code, documentation and a 
+                            tutorial can be found on 
+                            <a href='https://github.com/mbogdos96/EveRplot'>Github</a>."))
     ),
     
     mainPanel(
