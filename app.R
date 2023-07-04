@@ -19,7 +19,8 @@ xrwmata <- as.data.frame(c("black","blue","red"))
 #Building of the UI
 #=================
 #=================
-ui <- fluidPage(
+ui <- function(request){
+  fluidPage(
   
   #=====
   #Title
@@ -41,6 +42,10 @@ ui <- fluidPage(
                           accept = c("text/csv",
                                      "text/comma-separated-values,text/plain",
                                      ".csv")),
+                
+                # Button for bookmarking settings
+                bookmarkButton(),
+                
                 #Change subsection
                 h3("Aesthetics"),
                 fluidRow(column(6,
@@ -171,17 +176,21 @@ ui <- fluidPage(
                                                      "None" = "5"),
                                       selected = "5"),
                          
-                         #Slider for changing positioning of labels
-                         sliderInput("nud",
+                         # Slider for changing positioning of labels
+                         textInput("nud",
                                      "Position of Labels",
-                                     min = 0,
-                                     max = 30,
                                      value = 5),
                          
-                         #Slider for changing label size
+                         # Text box for changing label size
                          textInput("lsz",
                                      "Size of Labels",
                                      value = 5),
+                         
+                         # Text box for changing sig fig in label
+                         textInput("lsg",
+                                   "Number of Decimal Places",
+                                   value = 2),
+                         
                          
                          ),
                   
@@ -303,6 +312,7 @@ ui <- fluidPage(
                     )
   )
 )
+}
 
 #======================================
 #======================================
@@ -360,10 +370,10 @@ server <- function(input,output,session){
                         dg, 
                         lead(dg)),
              nudge = ifelse(dg > lead(dg), 
-                            dg + input$nud, 
-                            dg - input$nud),
+                            dg + as.numeric(input$nud), 
+                            dg - as.numeric(input$nud)),
              nudge = ifelse(is.na(nudge), 
-                            dg - input$nud, 
+                            dg - as.numeric(input$nud), 
                             nudge))
   })
   
@@ -623,7 +633,8 @@ server <- function(input,output,session){
                                    mapping = aes(x = rc,
                                               y = nudge,
                                               label = paste0("(", 
-                                                             dg, 
+                                                             format(round(dg,
+                                                                          digits = as.numeric(input$lsg))), 
                                                              ")")),
                                     size = as.numeric(input$lsz))
     }
@@ -647,7 +658,8 @@ server <- function(input,output,session){
                                  label = paste0(cpd_num, 
                                                 "\n", 
                                                 "(", 
-                                                dg, 
+                                                format(round(dg,
+                                                      digits = as.numeric(input$lsg))), 
                                                 ")")),
                    size = as.numeric(input$lsz))
     }
@@ -658,10 +670,11 @@ server <- function(input,output,session){
         geom_label_repel(data = df_up_e(),
                          mapping = aes(x = rc,
                                  y = nudge,
-                                 label = paste0(cpd_num, 
-                                                "\n", 
+                                 label = paste0(cpd_num,
+                                                "\n",
                                                 "(", 
-                                                dg, 
+                                                format(round(dg,
+                                                             digits = as.numeric(input$lsg))), 
                                                 ")")),
                    size = as.numeric(input$lsz))
     }
@@ -734,4 +747,6 @@ server <- function(input,output,session){
 #===================
 #End command for app
 #=================== 
-shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, 
+         server = server,
+         enableBookmarking = "url")
