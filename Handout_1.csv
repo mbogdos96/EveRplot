@@ -1,0 +1,11 @@
+rc,dg,cpd_num,pathway
+0,0,Reactants,1
+3,11,TS1 - SN2,1
+6,3,Intermediates - SN2,1
+9,27.5,TS2 - SN2,1
+12,-4,Products,1
+0,0,Reactants,2
+3,27.5,TS1 - SN1,2
+6,10,Intermediates - SN1,2
+9,13,TS2 - SN1,2
+12,-4,Products,2
